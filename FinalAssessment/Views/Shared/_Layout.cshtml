@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Final Assessment</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="~/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="~/assets/css/templatemo-space-dynamic.css">
+    <link rel="stylesheet" href="~/assets/css/animated.css">
+    <link rel="stylesheet" href="~/assets/css/owl.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/FinalAssessment.styles.css" asp-append-version="true" />
+    <link href="~/css/arun.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-scroller">
+        <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <nav class="main-nav">
+                            <!-- ***** Logo Start ***** -->
+                            <a href="index.html" class="logo">
+                                <h4>Final<span>Assessment</span></h4>
+                            </a>
+                            <!-- ***** Logo End ***** -->
+                            <!-- ***** Menu Start ***** -->
+                            <ul class="nav">
+                                @*<li class="scroll-to-section"><a class="navbar-brand active" asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                                <li class="scroll-to-section"><a class="navbar-brand active" asp-area="" asp-controller="Home" asp-action="Insert">Add/View</a></li>
+                                <li class="scroll-to-section"><a class="navbar-brand active" asp-area="" asp-controller="Home" asp-action="AssessmentReport">Report</a></li>
+
+                                <li class="scroll-to-section"><div class="main-red-button"><a href="#contact">Contact Now</a></div></li>*@
+                            </ul>
+                            <a class='menu-trigger'>
+                                <span>Menu</span>
+                            </a>
+                            <!-- ***** Menu End ***** -->
+                        </nav>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </header>
+
+
+
+        <!-- start nav munu -->
+        <div class="floaty-container show-in-large-devices" data-font-size="14" style="position: fixed; top: 111px;">
+            <div class="floaty" data-font-size="14">
+                <div class="floaty-link-box" data-font-size="14">
+                    <div class="floaty-links-icon" data-font-size="14"><i class="fa fa-home" data-font-size="12"></i></div>
+                    <a asp-controller="Home" asp-action="Index"><div class="floaty-links-text" asp-area="" data-font-size="16">Home</div></a>
+                </div>
+                <div class="floaty-link-box" data-font-size="14">
+                    <div class="floaty-links-icon" data-font-size="14">
+                        <i class="fa fa-shopping-cart" data-font-size="12"></i>
+                    </div>
+                    <a asp-area="" asp-controller="Home" asp-action="Insert"><div class="floaty-links-text" data-font-size="16">Order</div></a>
+                </div>
+                <div class="floaty-link-box" data-font-size="14">
+                    <div class="floaty-links-icon" data-font-size="14">
+                        <i class="fa fa-bar-chart" data-font-size="12"></i>
+                    </div>
+                    <a asp-area="" asp-controller="Home" asp-action="AssessmentReport"><div class="floaty-links-text" data-font-size="16">Reports</div></a>
+                </div>
+
+                <div class="floaty-link-box"  data-font-size="14">
+                    <div class="floaty-links-icon" style="margin-top: 1px;" data-font-size="14">
+                        <i class="fas fa-chess" data-font-size="12"></i>
+                    </div>
+                    <a asp-area="" style="margin-top: 1px;" asp-controller="Games" asp-action="Chess"><div class="floaty-links-text" data-font-size="16">Chess</div></a>
+                </div>
+
+                <div class="floaty-link-box" data-font-size="14">
+                    <div class="floaty-links-icon" data-font-size="14">
+                        <i class="fa fa-question"
+                           data-font-size="12"></i>
+                    </div>
+                    <a href="#"><div class="floaty-links-text" data-font-size="16" style="margin-top: 1px;">FAQ</div></a>
+                </div>
+
+            </div> <!---->
+        </div>
+
+
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+    </div>
+
+
+
+    @*<footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 wow fadeIn" data-wow-duration="1s" data-wow-delay="0.25s">
+                    <p>
+                        © Copyright 2023 Final Assessment All Rights Reserved.
+
+                        <br>Design: <a rel="nofollow" href="#">Arun Kumar Mahanta</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>*@
+
+    <footer class="card-footer">
+        <div class="justify-content-lg-center">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                © Copyright 2023 Final Assessment <a rel="nofollow" href="#">Arun Kumar Mahanta</a>. All rights
+                reserved.
+            </span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-muted text-center">
+                Hand-crafted & made with <i class="fa fa-heart text-danger"></i>
+            </span>
+        </div>
+    </footer>
+    <!-- Scripts -->
+    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
+
+    @*<script src="~/vendor/jquery/jquery.min.js"></script>*@
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/owl-carousel.js"></script>
+    <script src="~/assets/js/animation.js"></script>
+    <script src="~/assets/js/imagesloaded.js"></script>
+    <script src="~/assets/js/templatemo-custom.js"></script>
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

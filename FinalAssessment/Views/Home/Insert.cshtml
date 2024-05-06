@@ -1,0 +1,494 @@
+﻿@{
+    ViewData["Title"] = "View";
+    Layout = "_Layout"; // Set the layout page to use
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- Add Custom CSS -->
+    <style>
+        /* Add your custom CSS styles here */
+        body {
+            background-color: #f4f4f4;
+            margin-top: 100px;
+        }
+
+        /*.container {
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }*/
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-submit {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+        }
+
+            .btn-submit:hover {
+                background-color: #0056b3;
+            }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Take Order</h5>
+                        <hr>
+                        <div class="row col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="custid">Customer <span class="text-danger">*</span></label>
+                                    <select id="custid" name="BranchId" class="form-select" required>
+                                        <option value="0">Select</option>
+                                    </select>
+                                    <div id="cust" class="invalid-feedback">
+                                        Please select a customer.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="BranchId">Category <span class="text-danger">*</span></label>
+                                    <select id="BranchId" name="BranchId" class="form-select" required>
+                                        <option value="0">Select</option>
+                                    </select>
+                                    <div id="batch" class="invalid-feedback">
+                                        Please select a Category.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="TechId">Sub Category <span class="text-danger">*</span></label>
+                                    <select id="TechId" name="TechId" class="form-select" required>
+                                        <option value="0">Select</option>
+                                    </select>
+                                    <div id="tech" class="invalid-feedback">
+                                        Please select a sub category.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="EmpId">Item  <span class="text-danger">*</span></label>
+                                    <select id="EmpId" name="EmpId" class="form-select" required>
+                                        <option value="0">Select</option>
+                                    </select>
+                                    <div id="emp" class="invalid-feedback">
+                                        Please select an item.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="Mark">Quantity <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="Mark" name="Mark" required min="0" max="100">
+                                    <div id="mk" class="invalid-feedback">
+                                        Please enter a valid quqntity between 0 and 100.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" id="submitBtn" class="btn btn-submit">Submit</button>
+                            </div>
+                        </div>
+                        <section class="box section-box" id="section2">
+                            <div class="util-group float-right mb-2">
+                                <a href="javascript:generateData('Citizenship','tblDatatable');" title="Export to PDF" id="printIcon" data-toggle="tooltip" data-placement="top" class="text-info">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+                            </div>
+                            <table class="table table-bordered" id="tblDatatable">
+                                <thead>
+                                    <tr>
+                                        <th>SL#</th>
+                                        <th>Order No</th>
+                                        @*<th>Batch Address</th>*@
+                                        <th>Category Name</th>
+                                        <th>Sub Cat Name</th>
+                                        <th>Item Name</th>
+                                        <th>Qty</th>
+                                        <th>Rate</th>
+                                        <th>Value</th>
+                                        <th>CGST</th>
+                                        <th>SGST</th>
+                                        <th>GST</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tblLocation">
+                                    <!-- Table data will be dynamically generated here -->
+                                </tbody>
+                            </table>
+                        </section>
+                        <div class="text-center">
+                            <button type="submit" id="btnsubmit" class="btn btn-submit">Save Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Add Bootstrap JS and jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Add Bootstrap CSS and SweetAlert script -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <!-- Add your custom JavaScript here -->
+    <script>
+        // Client-side validation for the "Enter Mark" field
+        $(document).ready(function () {
+            $('#Mark').on('input', function () {
+                var input = $(this).val();
+                if (input < 0 || input > 100) {
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+            // Populate the cust dropdown
+            $.ajax({
+                url: '/Home/BindCust', // Replace with the actual URL for fetching branch data
+                type: 'POST',
+                success: function (data) {
+                    console.log(data);
+                    var result = JSON.parse(data);
+                    console.log(result);
+
+                    var html = '';
+                    html += '<option value="0">Select</option>'; // Add a default option
+
+                    // Loop through the received data and create options
+                    for (var i = 0; i < result.length; i++) {
+                        html += '<option value="' + result[i].custid + '">' + result[i].custname + '</option>';
+                    }
+
+                    // Set the HTML content of the dropdown with the generated options
+                    $("#custid").html(html);
+                },
+                error: function () {
+                    console.error('Error fetching Branch data.');
+                }
+            });
+            // Populate the cat dropdown
+            $.ajax({
+                url: '/Home/getCat', // Replace with the actual URL for fetching branch data
+                type: 'POST',
+                success: function (data) {
+                    var result = data;
+                    console.log(data);
+                    var html = '';
+                    html += '<option value="0">Select</option>'; // Add a default option
+
+                    // Loop through the received data and create options
+                    for (var i = 0; i < result.length; i++) {
+                        html += '<option value="' + result[i].catid + '">' + result[i].catname + '</option>';
+                    }
+
+                    // Set the HTML content of the dropdown with the generated options
+                    $("#BranchId").html(html);
+                },
+                error: function () {
+                    console.error('Error fetching Branch data.');
+                }
+            });
+
+
+            //Populate the subcat dropdown
+            $('#BranchId').change(function () {
+                var selectedBatchId = $(this).val();
+                $('#TechId').empty().prop('disabled', true);
+                $.ajax({
+                    url: '/Home/BindSubcat', // Replace with the actual URL for fetching branch data
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { catid: selectedBatchId },
+                    success: function (data) {
+                        console.log(data);
+                        var result = JSON.parse(data);
+                        var techDropdown = $('#TechId');
+                        techDropdown.empty(); // Clear existing options
+                        techDropdown.append($('<option>').val(0).text('Select')); // Add a default option
+
+                        // Populate the dropdown with fetched data
+                        $.each(result, function (index, tech) {
+                            techDropdown.append($('<option>').val(tech.subcatid).text(tech.subcatnme));
+                        });
+                        techDropdown.prop('disabled', false);
+                    },
+                    error: function () {
+                        console.error('Error fetching Branch data.');
+                    }
+                });
+            });
+            
+            // Populate the item dropdown
+            $('#TechId').change(function () {
+                var selectedTechId = $(this).val();
+                
+
+                // Clear and disable the Employee dropdown while loading data
+                $('#EmpId').empty().prop('disabled', true);
+
+                // Fetch employees based on the selected technology
+                $.ajax({
+                    url: '/Home/Binditem', // Replace with the actual URL for fetching employees
+                    method: 'GET',
+                    data: { subcatid: selectedTechId }, // Send the selected technology ID as a parameter
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        var data = JSON.parse(data);
+                        console.log(data);
+                        var empDropdown = $('#EmpId');
+                        empDropdown.empty(); // Clear existing options
+                        empDropdown.append($('<option>').val(0).text('Select')); // Add a default option
+
+                        // Populate the dropdown with fetched employee data
+                        $.each(data, function (index, employee) {
+                            empDropdown.append($('<option>').val(employee.itemid).text(employee.itemname));
+                        });
+
+                        // Enable the Employee dropdown after data is loaded
+                        empDropdown.prop('disabled', false);
+                    },
+                    error: function () {
+                        console.error('Error fetching Employee data.');
+                    }
+                });
+            });
+
+        });
+
+        // Handle button click
+        $('#submitBtn').click(function () {
+            $('.invalid-feedback').hide();
+            $('.is-invalid').removeClass('is-invalid');
+            // Validate the form
+            var isValid = true;
+            
+            if ($('#BranchId').val() == 0) {
+                $('#BranchId').addClass('is-invalid');
+                $('#batch').show();
+                isValid = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: "Please select Category.",
+                });
+                return;
+            }
+
+            if ($('#TechId').val() == 0) {
+                $('#TechId').addClass('is-invalid');
+                $('#tech').show();
+                isValid = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: "Please select Sub category.",
+                });
+                return;
+            }
+
+            if ($('#EmpId').val() == 0) {
+                $('#EmpId').addClass('is-invalid');
+                $('#emp').show();
+                isValid = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: "Please select Item.",
+                });
+                return;
+            }
+
+            var mark = parseInt($('#Mark').val());
+            if (isNaN(mark) || mark < 0 || mark > 100) {
+                $('#Mark').addClass('is-invalid');
+                $('#mk').show();
+                isValid = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: "Please enter a valid Quantity between 0 and 100.",
+                });
+                return;
+            }
+            // If the form is valid, prepare the data to send to the server
+            var formData = new FormData();
+            formData = {
+                catid: $('#BranchId').val(),
+                subcatid: $('#TechId').val(),
+                itemid: $('#EmpId').val(),
+                qty: $('#Mark').val()
+            };
+
+            // Send the data to the server using Fetch API
+
+            $.ajax({
+                url: '/Home/InsertSalesSlave',
+                type: 'POST',
+                //contentType: 'application/json;charset=UTF-8',
+                data: formData,
+                success: function (response) {
+                    if (response == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Item Added successfully!',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while processing the form.',
+                        });
+                    }
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while submitting the form.',
+                    });
+                }
+            });
+            fetchDataFromController();
+        });
+
+        $('#btnsubmit').click(function () {
+            $('.invalid-feedback').hide();
+            $('.is-invalid').removeClass('is-invalid');
+            // Validate the form
+            var isValid = true;
+            if ($('#custid').val() == 0) {
+                $('#custid').addClass('is-invalid');
+                $('#cust').show();
+                isValid = false;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Error',
+                    text: "Please select Customer.",
+                });
+                return;
+            }
+            
+            // If the form is valid, prepare the data to send to the server
+            var formData = new FormData();
+            formData = {
+                custid: $('#custid').val()
+            };
+
+            // Send the data to the server using Fetch API
+
+            $.ajax({
+                url: '/Home/InsertSalesMaster',
+                type: 'POST',
+                //contentType: 'application/json;charset=UTF-8',
+                data: formData,
+                success: function (response) {
+                    if (response == 1) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Order Saved successfully!',
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while processing the form.',
+                        });
+                    }
+                    
+                },
+                error: function () {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while submitting the form.',
+                    });
+                }
+            });
+
+        });
+        function fetchDataFromController() {
+            var selectedBatchId = $("#BranchId").val();
+            $.ajax({
+                url: '/Home/GetAllbyLastOrderno', // Replace with the actual URL of your controller
+                method: 'POST', // Use GET or POST based on your controller's endpoint
+                dataType: 'json', // Assuming the controller returns JSON data
+                data: {  }, // Send the selected technology ID as a parameter
+                success: function (data) {
+                    // Clear existing table data
+                    var data = JSON.parse(data);
+                    console.log(data);
+                    var x = 1;
+                    $("#tblLocation").empty();
+
+                    // Loop through the data and append rows to the table
+                    for (var i = 0; i < data.length; i++) {
+                        //console.log(data[i].batchName);
+                        var cat = "";
+                        if (data[i].catid=="1") {
+                            cat = "Electronics";
+                        }
+                        else {
+                            cat = "wood";
+                        }
+                        var row = "<tr>" +
+                            "<td>" + x++ + "</td>" +
+                            "<td>" + data[i].orderno + "</td>" +
+                            "<td>" + cat + "</td>" +
+                            "<td>" + data[i].subcatnme + "</td>" +
+                            "<td>" + data[i].itemname + "</td>" +
+                            "<td>" + data[i].qty + "</td>" +
+                            "<td>" + data[i].rate + "</td>" +
+                            "<td>" + data[i].valuee + "</td>" +
+                            "<td>" + data[i].cgstvalue + "</td>" +
+                            "<td>" + data[i].sgstvalue + "</td>" +
+                            "<td>" + data[i].gst + "</td>" +
+                            //"<td>" + data[i].status + "</td>" +
+                            "</tr>";
+
+                        $("#tblLocation").append(row);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data from the controller:", error);
+                }
+            });
+        }
+
+    </script>
+</body>
+</html>
+

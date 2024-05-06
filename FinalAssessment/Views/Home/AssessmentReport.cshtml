@@ -1,0 +1,215 @@
+﻿@{
+    ViewData["Title"] = "View";
+    Layout = "_Layout"; // Set the layout page to use
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample HTML Page</title>
+    <style>
+        /* Custom CSS for the PDF button */
+        .pdf-button {
+            background-color: #ff6f61;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            margin-top: 100px;
+        }
+
+        .pdf-button:hover {
+            background-color: #d14034;
+        }
+
+        /* Custom CSS for sections with box-shadow */
+        .section-box {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        /* Style the table */
+        #tblDatatable {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+            /* Style table headers */
+            #tblDatatable th {
+                background-color: #333;
+                color: #fff;
+                font-weight: bold;
+                padding: 10px;
+                text-align: center;
+                border: 1px solid #ddd;
+            }
+
+            /* Style table rows */
+            #tblDatatable tbody tr {
+                text-align: center;
+            }
+
+                /* Style alternating rows */
+                #tblDatatable tbody tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                }
+
+            /* Style table cells */
+            #tblDatatable td {
+                padding: 8px;
+                border: 1px solid #ddd;
+            }
+
+            /* Add hover effect to table rows */
+            #tblDatatable tbody tr:hover {
+                background-color: #ccc;
+            }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Include Font Awesome for icons -->
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <section class="box form-container section-box" id="section1">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="Branch" class="control-label">Select Branch</label>
+                                        <select id="BranchId" class="form-control" title="Branch">
+                                            <option value="0">Select</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <br />
+                                        <button type="submit" id="submitBtn" class="btn btn-primary">Show</button>
+                                        <button type="reset" class="btn btn-warning">Reset</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="box section-box" id="section2">
+                            <div class="util-group float-right mb-2">
+                                <a href="javascript:generateData('Citizenship','tblDatatable');" title="Export to PDF" id="printIcon" data-toggle="tooltip" data-placement="top" class="text-info">
+                                    <i class="fas fa-file-pdf"></i>
+                                </a>
+                            </div>
+                            <table class="table table-bordered" id="tblDatatable">
+                                <thead>
+                                    <tr>
+                                        <th>SL#</th>
+                                        <th>Branch Name</th>
+                                        @*<th>Batch Address</th>*@
+                                        <th>Technology Name</th>
+                                        <th>Employee Name</th>
+                                        <th>Phone</th>
+                                        <th>E-Mail</th>
+                                        <th>Mark</th>
+                                        <th>Grade</th>
+                                        @*<th>Status</th>*@
+                                    </tr>
+                                </thead>
+                                <tbody id="tblLocation">
+                                    <!-- Table data will be dynamically generated here -->
+                                </tbody>
+                            </table>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Populate the Batch dropdown
+            $.ajax({
+                url: '/Home/GetBatch', // Replace with the actual URL for fetching branch data
+                type: 'POST',
+                success: function (data) {
+                    var result = JSON.parse(data);
+
+                    var html = '';
+                    html += '<option value="0">Select</option>'; // Add a default option
+
+                    // Loop through the received data and create options
+                    for (var i = 0; i < result.length; i++) {
+                        html += '<option value="' + result[i].batchId + '">' + result[i].batchName + '</option>';
+                    }
+
+                    // Set the HTML content of the dropdown with the generated options
+                    $("#BranchId").html(html);
+                },
+                error: function () {
+                    console.error('Error fetching Branch data.');
+                }
+            });
+        });
+        // Function to fetch data from the controller
+        function fetchDataFromController() {
+            var selectedBatchId = $("#BranchId").val();
+            $.ajax({
+                url: '/Home/GetDetailsByID', // Replace with the actual URL of your controller
+                method: 'POST', // Use GET or POST based on your controller's endpoint
+                dataType: 'json', // Assuming the controller returns JSON data
+                data: { BatchId: selectedBatchId }, // Send the selected technology ID as a parameter
+                success: function (data) {
+                    // Clear existing table data
+                    var data = JSON.parse(data);
+                    console.log(data);
+                    var x = 1;
+                    $("#tblLocation").empty();
+                    
+                    // Loop through the data and append rows to the table
+                    for (var i = 0; i < data.length; i++) {
+                        //console.log(data[i].batchName);
+                        
+                        var row = "<tr>" +
+                            "<td>" + x++ + "</td>" +
+                            "<td>" + data[i].batchName + "</td>" +
+                            "<td>" + data[i].teeechnologyName + "</td>" +
+                            "<td>" + data[i].employeeName + "</td>" +
+                            "<td>" + data[i].employeePhone + "</td>" +
+                            "<td>" + data[i].employeeEmail + "</td>" +
+                            "<td>" + data[i].mark + "</td>" +
+                            "<td>" + data[i].grade + "</td>" +
+                            //"<td>" + data[i].status + "</td>" +
+                            "</tr>";
+
+                        $("#tblLocation").append(row);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data from the controller:", error);
+                }
+            });
+        }
+
+        // Attach the function to a button click event
+        $("#submitBtn").on("click", function () {
+            fetchDataFromController();
+        });
+
+    </script>
+</body>
+</html>
+
